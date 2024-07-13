@@ -7,9 +7,13 @@ from config.dynamoDB import DynamoDB
 class TransactionService:
 
     def get_transactions() -> List[Transaction]:
-        connection = DynamoDB.connect()
-        response = DynamoDB.consult(connection, "transaction")
-        return response
+        dynamodb_client = DynamoDB()
+
+        try:
+            items = dynamodb_client.consult("transaction")
+            return items
+        except RuntimeError as e:
+            print(f"Error: {e}")
 
     def create_transaction(transaction: Transaction):
         print(transaction)
