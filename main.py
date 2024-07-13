@@ -1,4 +1,5 @@
 import os
+import logging
 from dotenv import load_dotenv  # type: ignore
 from fastapi import FastAPI  # type: ignore
 
@@ -8,6 +9,7 @@ from routers.fund import fund_router
 from routers.transaction import transaction_router
 
 load_dotenv()
+logging.basicConfig(level=logging.INFO)
 
 app = FastAPI()
 version = os.getenv("VERSION")

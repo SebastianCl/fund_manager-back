@@ -1,20 +1,26 @@
 from typing import List
-
+from fastapi import HTTPException # type: ignore
 from schemas.transaction import Transaction
 from config.dynamoDB import DynamoDB
+import logging
 
+logger = logging.getLogger(__name__)
 
 class TransactionService:
+    def __init__(self):
+        self.dynamodb_client = DynamoDB()
 
-    def get_transactions() -> List[Transaction]:
-        dynamodb_client = DynamoDB()
-
+    def get_transactions(self) -> List[Transaction]:
         try:
-            items = dynamodb_client.get_all("transaction")
-            return items
+            items = self.dynamodb_client.get_all("transaction")
+            return [Transaction(**item) for item in items]
         except RuntimeError as e:
-            print(f"Error: {e}")
+            logger.error(f"Error fetching transactions: {e}")
+            raise HTTPException(status_code=500, detail="Error fetching transactions")
 
-    def create_transaction(transaction: Transaction):
-        print(transaction)
-        return
+    def create_transaction(self, transaction: Transaction) -> None:
+        try:
+            self.dynamodb_client.create_item("transaction", transaction.dict())
+        except RuntimeError as e:
+            logger.error(f"Error creating transaction: {e}")
+            raise HTTPException(status_code=500, detail="Error creating transaction")

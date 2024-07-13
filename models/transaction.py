@@ -2,7 +2,7 @@ from pydantic import BaseModel  # type: ignore
 
 
 class Transaction(BaseModel):
-    transactionId = int
+    transaction_id = int
     fundId = str
     type = str
     amount = str
