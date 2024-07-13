@@ -10,7 +10,7 @@ class TransactionService:
         dynamodb_client = DynamoDB()
 
         try:
-            items = dynamodb_client.consult("transaction")
+            items = dynamodb_client.get_all("transaction")
             return items
         except RuntimeError as e:
             print(f"Error: {e}")
