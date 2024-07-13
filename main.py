@@ -5,8 +5,8 @@ from fastapi import FastAPI  # type: ignore
 
 from middlewares.error_handler import ErrorHandler
 
-from routers.fund import fund_router
-from routers.transaction import transaction_router
+from routers.fund_router import fund_router
+from routers.transaction_router import transaction_router
 
 load_dotenv()
 logging.basicConfig(level=logging.INFO)

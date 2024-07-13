@@ -1,8 +1,7 @@
 from pydantic import BaseModel, Field  # type: ignore
-from typing import Optional
 
 
-class Transaction(BaseModel):
+class TransactionSchema(BaseModel):
     transaction_id: int
     fundId: str = Field(min_length=1, max_length=15)
     amount: str = Field(min_length=1, max_length=15)

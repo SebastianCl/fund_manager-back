@@ -1,10 +1,10 @@
 from typing import List
-from schemas.fund import Fund
+from schemas.fund_schema import FundSchema
 
 
 class FundService:
 
-    def get_funds() -> List[Fund]:
+    def get_funds() -> List[FundSchema]:
         result = [
             {
                 "id": 1,

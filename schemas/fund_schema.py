@@ -1,9 +1,8 @@
 from pydantic import BaseModel, Field # type: ignore
-from typing import Optional
 
 
-class Fund(BaseModel):
-    id: Optional[int] = None
+class FundSchema(BaseModel):
+    id: int
     name: str = Field(min_length=5, max_length=15)
     minimumAmount: str = Field(min_length=5, max_length=15)
     category:str = Field(min_length=5, max_length=15)
