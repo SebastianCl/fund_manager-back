@@ -14,7 +14,7 @@ transaction_router = APIRouter()
     response_model=List[Transaction],
     status_code=200,
 )
-def get_transactions() -> List[Transaction]:
+def get_transactions() -> Transaction:
     result = TransactionService.get_transactions()
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
 

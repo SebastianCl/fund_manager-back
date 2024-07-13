@@ -3,7 +3,7 @@ from typing import Optional
 
 
 class Transaction(BaseModel):
-    id: Optional[int] = None
+    transactionId: Optional[int] = None
     fundId: str = Field(min_length=1, max_length=15)
     amount: str = Field(min_length=1, max_length=15)
     type: str = Field(min_length=1, max_length=15)
@@ -12,7 +12,7 @@ class Transaction(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "id": 1,
+                "transactionId": 123,
                 "fundId": "1",
                 "amount": "75000",
                 "type": "apertura",
