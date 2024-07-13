@@ -29,3 +29,7 @@ class TransactionService:
             },
         ]
         return result
+
+    def create_transaction(transaction: Transaction):
+        print(transaction)
+        return
