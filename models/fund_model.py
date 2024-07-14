@@ -1,8 +1,8 @@
 from pydantic import BaseModel  # type: ignore
 
 
-class Fund(BaseModel):
-    id = int
-    name = str
-    minimumAmount = str
-    category = str
+class FundModel(BaseModel):
+    fund_id: int
+    name: str
+    minimum_amount: int
+    category: str

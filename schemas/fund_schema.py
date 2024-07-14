@@ -1,19 +1,18 @@
-from pydantic import BaseModel, Field # type: ignore
+from pydantic import BaseModel, Field  # type: ignore
 
 
 class FundSchema(BaseModel):
-    id: int
-    name: str = Field(min_length=5, max_length=15)
-    minimumAmount: str = Field(min_length=5, max_length=15)
-    category:str = Field(min_length=5, max_length=15)
+    fund_id: int
+    name: str = Field(min_length=1, max_length=50)
+    minimum_amount: int
+    category: str = Field(min_length=1, max_length=3)
 
     class Config:
         schema_extra = {
             "example": {
-                "id": 1,
+                "fund_id": 1,
                 "name": "FPV_EL CLIENTE_RECAUDADORA",
-                "minimumAmount": "75000",
-                "category" : "FPV"
+                "minimum_amount": 75000,
+                "category": "FPV",
             }
         }
-
