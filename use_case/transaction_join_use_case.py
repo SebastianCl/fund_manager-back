@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 class TransactionJoinUseCase:
 
-    def join_a_found(transactionJoin: TransactionJoinSchema):
+    def join_a_found(transactionJoin: TransactionJoinSchema) -> int:
 
         try:
             userService = UserService()
@@ -38,22 +38,25 @@ class TransactionJoinUseCase:
                     + fund_data.get("name"),
                 )
 
+            new_transaction_id = Utils.generar_numero_unico()
             transactionService = TransactionService()
-            transaction_data = TransactionModel(
+            transaction_join_data = TransactionModel(
+                transaction_id=new_transaction_id,
                 user_id=transactionJoin.user_id,
-                transaction_id=Utils.generar_numero_unico(),
                 fund_id=transactionJoin.fund_id,
                 amount=transactionJoin.amount,
                 type="apertura",
                 date=datetime.now().isoformat(),
             )
-            transactionService.create_transaction(transaction_data)
+            transactionService.create_transaction(transaction_join_data)
 
             new_amount = user_data.get("amount") - transactionJoin.amount
             new_user_data = UserUpdateSchema(
                 amount=new_amount,
             )
             userService.update_user_amount(transactionJoin.user_id, new_user_data)
+
+            return new_transaction_id
 
         except RuntimeError as e:
             logger.error(f"Error al registrar: {e}")
