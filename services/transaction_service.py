@@ -1,14 +1,14 @@
 from typing import List
 from fastapi import HTTPException # type: ignore
 from models.transaction_model import TransactionModel
-from config.dynamoDB import DynamoDB
+from config.dynamoDB_manager import DynamoDBManager
 import logging
 
 logger = logging.getLogger(__name__)
 
 class TransactionService:
     def __init__(self):
-        self.dynamodb_client = DynamoDB()
+        self.dynamodb_client = DynamoDBManager()
 
     def get_transactions(self) -> List[TransactionModel]:
         try:

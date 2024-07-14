@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import HTTPException  # type: ignore
 from models.fund_model import FundModel
-from config.dynamoDB import DynamoDB
+from config.dynamoDB_manager import DynamoDBManager
 import logging
 
 logger = logging.getLogger(__name__)
@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 class FundService:
     def __init__(self):
-        self.dynamodb_client = DynamoDB()
+        self.dynamodb_client = DynamoDBManager()
 
     def get_funds(self) -> List[FundModel]:
         try:
