@@ -2,6 +2,7 @@ import os
 import logging
 from dotenv import load_dotenv  # type: ignore
 from fastapi import FastAPI  # type: ignore
+from fastapi.middleware.cors import CORSMiddleware  # type: ignore
 
 from middlewares.error_handler import ErrorHandler
 
@@ -21,3 +22,15 @@ app.add_middleware(ErrorHandler)
 
 app.include_router(fund_router)
 app.include_router(transaction_router)
+
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
