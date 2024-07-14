@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field  # type: ignore
 
 class TransactionSchema(BaseModel):
     transaction_id: str
+    user_id: int
     fund_id: int
     amount: int
     type: str = Field(min_length=1, max_length=15)

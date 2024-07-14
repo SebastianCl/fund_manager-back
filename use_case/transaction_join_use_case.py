@@ -40,6 +40,7 @@ class TransactionJoinUseCase:
 
             transactionService = TransactionService()
             transaction_data = TransactionModel(
+                user_id=transactionJoin.user_id,
                 transaction_id=Utils.generar_numero_unico(),
                 fund_id=transactionJoin.fund_id,
                 amount=transactionJoin.amount,

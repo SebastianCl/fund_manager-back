@@ -27,7 +27,7 @@ class DynamoDBManager:
                 aws_secret_access_key=self.aws_secret_access_key,
             )
         except (BotoCoreError, NoCredentialsError) as e:
-            raise ConnectionError(f"Failed to connect to DynamoDBManager: {e}")
+            raise ConnectionError(f"Failed to connect to DynamoDB: {e}")
 
     def create_item(self, table_name: str, item: Dict[str, Any]) -> None:
 

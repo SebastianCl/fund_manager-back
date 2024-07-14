@@ -19,13 +19,6 @@ class FundService:
             logger.error(f"Error fetching funds: {e}")
             raise HTTPException(status_code=500, detail="Error fetching funds")
 
-    def create_fund(self, fund: FundModel) -> None:
-        try:
-            self.dynamoDB_manager.create_item("fund", fund.dict())
-        except RuntimeError as e:
-            logger.error(f"Error creating fund: {e}")
-            raise HTTPException(status_code=500, detail="Error creating fund")
-
     def get_fund(self, fund_id: int) -> Optional[FundModel]:
         try:
             key = {"fund_id": fund_id}
