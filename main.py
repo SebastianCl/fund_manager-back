@@ -14,7 +14,7 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
 app = FastAPI()
-version = os.getenv("VERSIÓN")
+version = os.getenv("VERSION")
 
 app.title = "Fund Manager"
 app.version = version
