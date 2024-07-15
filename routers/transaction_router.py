@@ -28,7 +28,8 @@ def get_transactions() -> TransactionSchema:
     "/join_a_found", tags=["transactions"], response_model=dict, status_code=201
 )
 def join_a_found(transactionJoin: TransactionJoinSchema = Body()) -> dict:
-    join_transaction_id = TransactionJoinUseCase.join_a_found(transactionJoin)
+    transactionJoinUseCase = TransactionJoinUseCase()
+    join_transaction_id = transactionJoinUseCase.join_a_fund(transactionJoin)
     return JSONResponse(
         status_code=201,
         content={"message": f"Se ha registrado la transacción: " + join_transaction_id},

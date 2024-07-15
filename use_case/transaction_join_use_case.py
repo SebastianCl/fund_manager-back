@@ -15,60 +15,68 @@ logger = logging.getLogger(__name__)
 
 class TransactionJoinUseCase:
 
-    def join_a_found(transactionJoin: TransactionJoinSchema) -> int:
-        try:
-            userService = UserService()
-            user_data = userService.get_user(transactionJoin.user_id)
+    def __init__(self):
+        self.user_service = UserService()
+        self.fund_service = FundService()
+        self.transaction_service = TransactionService()
+        self.notifier = NotificationSender()
 
-            if not user_data:
-                raise HTTPException(status_code=404, detail="No existe el usuario")
+    def join_a_fund(self, transaction_join: TransactionJoinSchema) -> int:
+        user_data = self.user_service.get_user(transaction_join.user_id)
 
-            if transactionJoin.amount > user_data.get("amount"):
-                raise HTTPException(status_code=400, detail="Fondos insuficientes")
+        if not user_data:
+            logger.warning(f"Usuario no encontrado: {transaction_join.user_id}")
+            raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
-            fundService = FundService()
-            fund_data = fundService.get_fund(transactionJoin.fund_id)
-            if not fund_data:
-                raise HTTPException(status_code=404, detail="No existe el fondo")
+        if transaction_join.amount > user_data.get("amount"):
+            raise HTTPException(status_code=400, detail="Saldo insuficientes")
 
-            if transactionJoin.amount < fund_data.get("minimum_amount"):
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"No tiene saldo disponible para vincularse al fondo "
-                    + fund_data.get("name"),
-                )
+        fund_data = self.fund_service.get_fund(transaction_join.fund_id)
+        if not fund_data:
+            logger.warning(f"Fondo no encontrado: {transaction_join.fund_id}")
+            raise HTTPException(status_code=404, detail="Fondo no encontrado")
 
-            new_transaction_id = Utils.generate_unique_number()
-            transactionService = TransactionService()
-            transaction_join_data = TransactionModel(
-                transaction_id=new_transaction_id,
-                user_id=transactionJoin.user_id,
-                fund_id=transactionJoin.fund_id,
-                amount=transactionJoin.amount,
-                type="apertura",
-                date=datetime.now().isoformat(),
+        if transaction_join.amount < fund_data.get("minimum_amount"):
+            raise HTTPException(
+                status_code=400,
+                detail=f"No tiene saldo disponible para vincularse al fondo "
+                + fund_data.get("name"),
             )
-            transactionService.create_transaction(transaction_join_data)
 
-            new_amount = user_data.get("amount") - transactionJoin.amount
-            new_user_data = UserUpdateSchema(
-                amount=new_amount,
-            )
-            userService.update_user_amount(transactionJoin.user_id, new_user_data)
+        new_transaction_id = Utils.generate_unique_number()
+        transaction_data = TransactionModel(
+            transaction_id=new_transaction_id,
+            user_id=transaction_join.user_id,
+            fund_id=transaction_join.fund_id,
+            amount=transaction_join.amount,
+            type="apertura",
+            date=datetime.now().isoformat(),
+        )
+        self.transaction_service.create_transaction(transaction_data)
 
-            notifier = NotificationSender()
-            body = f"ID de la transacción: {new_transaction_id}"
+        new_amount = user_data.get("amount") - transaction_join.amount
+        user_update_data = UserUpdateSchema(amount=new_amount)
+        self.user_service.update_user_amount(transaction_join.user_id, user_update_data)
 
-            if transactionJoin.notificacion == "email":
-                to_email = user_data.get("email")
-                subject = f"Suscrito al fondo: {fund_data.get('name')}"
-                notifier.send_email(to_email, subject, body)
-            else:
-                to_phone = user_data.get("phone")
-                notifier.send_sms(to_phone, body)
+        self._send_notification(
+            transaction_join, user_data, new_transaction_id, fund_data
+        )
 
-            return new_transaction_id
+        return new_transaction_id
 
-        except RuntimeError as e:
-            logger.error(f"Error al registrar: {e}")
-            raise HTTPException(status_code=500, detail="Error al registrar")
+    def _send_notification(
+        self,
+        transaction_join: TransactionJoinSchema,
+        user_data,
+        transaction_id: int,
+        fund_data,
+    ):
+        body = f"ID de la transaction: {transaction_id}"
+
+        if transaction_join.notificacion == "email":
+            to_email = user_data.get("email")
+            subject = f"Suscrito al fondo: {fund_data.get('name')}"
+            self.notifier.send_email(to_email, subject, body)
+        else:
+            to_phone = user_data.get("phone")
+            self.notifier.send_sms(to_phone, body)
