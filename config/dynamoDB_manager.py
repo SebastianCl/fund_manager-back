@@ -12,9 +12,9 @@ class DynamoDBManager:
         aws_secret_access_key: Optional[str] = None,
     ):
         self.region_name = region_name or os.getenv("region_name")
-        self.aws_access_key_id = aws_access_key_id or os.getenv("aws_access_key_id")
+        self.aws_access_key_id = aws_access_key_id or os.getenv("access_key_id")
         self.aws_secret_access_key = aws_secret_access_key or os.getenv(
-            "aws_secret_access_key"
+            "secret_access_key"
         )
         self.dynamodb = self.connect()
 
