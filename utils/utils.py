@@ -5,7 +5,7 @@ import hashlib
 class Utils:
 
     def generate_unique_number() -> str:
-        numero_aleatorio = secrets.randbelow(1000)
-        id_unico = hashlib.sha256(secrets.token_bytes(32)).hexdigest()
-        numero_unico = f"{numero_aleatorio}{id_unico[:10]}"
-        return numero_unico
+        random_number = secrets.randbelow(1000)
+        unique_id = hashlib.sha256(secrets.token_bytes(32)).hexdigest()
+        unique_number = f"{random_number}{unique_id[:10]}"
+        return unique_number

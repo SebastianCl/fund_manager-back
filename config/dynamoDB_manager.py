@@ -27,7 +27,7 @@ class DynamoDBManager:
                 aws_secret_access_key=self.aws_secret_access_key,
             )
         except (BotoCoreError, NoCredentialsError) as e:
-            raise ConnectionError(f"Failed to connect to DynamoDB: {e}")
+            raise ConnectionError(f"No se pudo conectar a DynamoDB: {e}")
 
     def create_item(self, table_name: str, item: Dict[str, Any]) -> None:
 
@@ -35,7 +35,9 @@ class DynamoDBManager:
             table = self.dynamodb.Table(table_name)
             table.put_item(Item=item)
         except ClientError as e:
-            raise RuntimeError(f"Failed to create item in table {table_name}: {e}")
+            raise RuntimeError(
+                f"No se pudo crear el elemento en la tabla {table_name}: {e}"
+            )
 
     def read_item(
         self, table_name: str, key: Dict[str, Any]
@@ -46,7 +48,9 @@ class DynamoDBManager:
             response = table.get_item(Key=key)
             return response.get("Item")
         except ClientError as e:
-            raise RuntimeError(f"Failed to read item from table {table_name}: {e}")
+            raise RuntimeError(
+                f"No se pudo leer el elemento de la tabla {table_name}: {e}"
+            )
 
     def update_item(
         self,
@@ -64,7 +68,9 @@ class DynamoDBManager:
                 ExpressionAttributeValues=expression_attribute_values,
             )
         except ClientError as e:
-            raise RuntimeError(f"Failed to update item in table {table_name}: {e}")
+            raise RuntimeError(
+                f"No se pudo actualizar el elemento en la tabla {table_name}: {e}"
+            )
 
     def delete_item(self, table_name: str, key: Dict[str, Any]) -> None:
 
@@ -72,7 +78,9 @@ class DynamoDBManager:
             table = self.dynamodb.Table(table_name)
             table.delete_item(Key=key)
         except ClientError as e:
-            raise RuntimeError(f"Failed to delete item from table {table_name}: {e}")
+            raise RuntimeError(
+                f"No se pudo eliminar el elemento de la tabla {table_name}: {e}"
+            )
 
     def get_all(self, table_name: str) -> List[Dict[str, Any]]:
 
@@ -82,4 +90,4 @@ class DynamoDBManager:
             items = response.get("Items", [])
             return items
         except ClientError as e:
-            raise RuntimeError(f"Failed to scan table {table_name}: {e}")
+            raise RuntimeError(f"No se pudo leer la tabla {table_name}: {e}")

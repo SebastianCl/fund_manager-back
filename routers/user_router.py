@@ -13,5 +13,7 @@ def get_user(user_id: int = Path(ge=1, le=2000)) -> UserSchema:
     userService = UserService()
     result = userService.get_user(user_id)
     if not result:
-        return JSONResponse(status_code=404, content={"message": "No encontrado"})
+        return JSONResponse(
+            status_code=404, content={"message": "Usuario no encontrado"}
+        )
     return JSONResponse(status_code=200, content=jsonable_encoder(result))

@@ -36,9 +36,9 @@ class NotificationSender:
                 server.sendmail(
                     self.email_config["from_email"], to_email, msg.as_string()
                 )
-            print("Email sent successfully!")
+            print("Correo enviado correctamente!")
         except smtplib.SMTPException as e:
-            print(f"Failed to send email: {e}")
+            print(f"Fallo al enviar email: {e}")
 
     def send_sms(self, to_phone, body):
         client = Client(self.sms_config["account_sid"], self.sms_config["auth_token"])
@@ -46,6 +46,6 @@ class NotificationSender:
             message = client.messages.create(
                 body=body, from_=self.sms_config["from_phone"], to=to_phone
             )
-            print("SMS sent successfully!")
+            print("SMS enviado correctamente!")
         except Exception as e:
-            print(f"Failed to send SMS: {e}")
+            print(f"Fallo al enviar SMS: {e}")

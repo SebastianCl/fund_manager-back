@@ -20,8 +20,8 @@ class UserService:
                 raise HTTPException(status_code=404, detail="User not found")
             return user_data
         except RuntimeError as e:
-            logger.error(f"Error reading user: {e}")
-            raise HTTPException(status_code=500, detail="Error reading user")
+            logger.error(f"Error al consultar usuario: {e}")
+            raise HTTPException(status_code=500, detail="Error al consultar usuario")
 
     def update_user_amount(self, user_id: int, update_data: UserUpdateSchema):
         try:
@@ -34,7 +34,9 @@ class UserService:
             self.dynamoDB_manager.update_item(
                 "user", key, update_expression, expression_attribute_values
             )
-            return {"message": "User updated successfully"}
+            return {"message": "Usuario actualizado con éxito"}
 
         except RuntimeError as e:
-            raise HTTPException(status_code=500, detail=f"Failed to update user: {e}")
+            raise HTTPException(
+                status_code=500, detail=f"No se pudo actualizar el usuario: {e}"
+            )

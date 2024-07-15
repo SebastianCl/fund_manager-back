@@ -16,16 +16,16 @@ class FundService:
             items = self.dynamoDB_manager.get_all("fund")
             return [FundModel(**item) for item in items]
         except RuntimeError as e:
-            logger.error(f"Error fetching funds: {e}")
-            raise HTTPException(status_code=500, detail="Error fetching funds")
+            logger.error(f"Error al obtener fondos: {e}")
+            raise HTTPException(status_code=500, detail="Error al obtener fondos")
 
     def get_fund(self, fund_id: int) -> Optional[FundModel]:
         try:
             key = {"fund_id": fund_id}
             fund_data = self.dynamoDB_manager.read_item("fund", key)
             if not fund_data:
-                raise HTTPException(status_code=404, detail="Fund not found")
+                raise HTTPException(status_code=404, detail="Fondo no encontrado")
             return fund_data
         except RuntimeError as e:
             logger.error(f"Error reading fund: {e}")
-            raise HTTPException(status_code=500, detail="Error reading fund")
+            raise HTTPException(status_code=500, detail="Error al consultar fondo")
