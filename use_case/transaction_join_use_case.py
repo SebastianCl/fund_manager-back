@@ -73,7 +73,7 @@ class TransactionJoinUseCase:
     ):
         body = f"ID de la transaction: {transaction_id}"
 
-        if transaction_join.notificacion == "email":
+        if transaction_join.notification == "email":
             to_email = user_data.get("email")
             subject = f"Suscrito al fondo: {fund_data.get('name')}"
             self.notifier.send_email(to_email, subject, body)
