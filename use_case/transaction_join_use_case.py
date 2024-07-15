@@ -6,6 +6,7 @@ from services.user_service import UserService
 from services.transaction_service import TransactionService
 from models.transaction_model import TransactionModel
 from utils.utils import Utils
+from utils.notification_sender import NotificationSender
 from datetime import datetime
 import logging
 
@@ -15,7 +16,6 @@ logger = logging.getLogger(__name__)
 class TransactionJoinUseCase:
 
     def join_a_found(transactionJoin: TransactionJoinSchema) -> int:
-
         try:
             userService = UserService()
             user_data = userService.get_user(transactionJoin.user_id)
@@ -38,7 +38,7 @@ class TransactionJoinUseCase:
                     + fund_data.get("name"),
                 )
 
-            new_transaction_id = Utils.generar_numero_unico()
+            new_transaction_id = Utils.generate_unique_number()
             transactionService = TransactionService()
             transaction_join_data = TransactionModel(
                 transaction_id=new_transaction_id,
@@ -55,6 +55,18 @@ class TransactionJoinUseCase:
                 amount=new_amount,
             )
             userService.update_user_amount(transactionJoin.user_id, new_user_data)
+
+            to_phone = "+573012545154"
+
+            to_email = "cardonaloaizasebastian112@gmail.com"
+            subject = f"Suscrito al fondo: {fund_data.get('name')}"
+
+            body = f"ID de la transacción: {new_transaction_id}"
+
+            # Crear una instancia de NotificationSender
+            notifier = NotificationSender()
+            notifier.send_sms(to_phone, body)
+            notifier.send_email(to_email, subject, body)
 
             return new_transaction_id
 

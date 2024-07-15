@@ -30,7 +30,7 @@ class TransactionCancelUseCase:
             if not user_data:
                 raise HTTPException(status_code=404, detail="No existe el usuario")
 
-            new_transaction_id = Utils.generar_numero_unico()
+            new_transaction_id = Utils.generate_unique_number()
 
             transaction_cancel_data = TransactionModel(
                 transaction_id=new_transaction_id,
