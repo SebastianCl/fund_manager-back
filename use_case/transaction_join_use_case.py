@@ -56,17 +56,16 @@ class TransactionJoinUseCase:
             )
             userService.update_user_amount(transactionJoin.user_id, new_user_data)
 
-            to_phone = "+573012545154"
-
-            to_email = "cardonaloaizasebastian112@gmail.com"
-            subject = f"Suscrito al fondo: {fund_data.get('name')}"
-
+            notifier = NotificationSender()
             body = f"ID de la transacción: {new_transaction_id}"
 
-            # Crear una instancia de NotificationSender
-            notifier = NotificationSender()
-            notifier.send_sms(to_phone, body)
-            notifier.send_email(to_email, subject, body)
+            if transactionJoin.notificacion == "email":
+                to_email = user_data.get("email")
+                subject = f"Suscrito al fondo: {fund_data.get('name')}"
+                notifier.send_email(to_email, subject, body)
+            else:
+                to_phone = user_data.get("phone")
+                notifier.send_sms(to_phone, body)
 
             return new_transaction_id
 

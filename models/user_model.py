@@ -5,3 +5,5 @@ class UserModel(BaseModel):
     user_id: int
     name: str
     amount: int
+    email: str
+    phone: str
