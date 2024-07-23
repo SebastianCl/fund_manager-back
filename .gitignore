@@ -1,5 +1,4 @@
 __pycache__
 venv
-database.sqlite
 .env
 .pytest_cache

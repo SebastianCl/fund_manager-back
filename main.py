@@ -27,6 +27,7 @@ app.include_router(user_router)
 
 origins = [
     "http://localhost:3000",
+    "http://fund-manager-front.s3-website.us-east-2.amazonaws.com",
 ]
 
 app.add_middleware(
