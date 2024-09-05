@@ -1,3 +1,44 @@
+
+## 💻 LOCAL
+
+**Ubuntu:**
+
+```sh
+python3 -m venv venv
+```
+
+```sh
+source venv/bin/activate
+```
+
+```sh
+pip install -r ./requirements.txt
+```
+
+```sh
+uvicorn main:app --reload
+```
+
+**Windows:**
+
+```sh
+python -m venv venv
+```
+
+```sh
+.venv\Scripts\activate
+```
+
+```sh
+pip install -r ./requirements.txt
+```
+
+```sh
+uvicorn main:app --reload
+```
+
+### 🐋 DOCKER
+
 Crear imagen
 
 ```sh
