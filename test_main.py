@@ -10,7 +10,7 @@ client = TestClient(app)
 
 def test_app_title_and_version():
     assert app.title == "Fund Manager"
-    assert app.version == os.getenv("VERSIÓN")
+    assert app.version == os.getenv("VERSION")
 
 
 def test_home_endpoint():

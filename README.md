@@ -26,7 +26,7 @@ python -m venv venv
 ```
 
 ```sh
-.venv\Scripts\activate
+venv\Scripts\activate
 ```
 
 ```sh
@@ -63,3 +63,8 @@ Correr imagen
 docker run -d -p 8000:8000 891377328192.dkr.ecr.us-east-2.amazonaws.com/fund_manager
 ```
 
+
+### 🧪 PRUEBAS
+```sh
+pytest
+```
